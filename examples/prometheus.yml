@@ -1,0 +1,21 @@
+# Example scrape configuration for tool_prometheus.
+# The token file contains only the token configured in the plugin (or forced in config.php).
+global:
+  scrape_interval: 60s
+
+rule_files:
+  - alerts.yml
+
+scrape_configs:
+  - job_name: moodle
+    scheme: https
+    metrics_path: /admin/tool/prometheus/metrics.php
+    authorization:
+      type: Bearer
+      credentials_file: /etc/prometheus/secrets/moodle_token
+    static_configs:
+      - targets: ["moodle.example.com"]
+    # Moodle redirects hosts other than $CFG->wwwroot. To scrape an internal address, keep the public host in
+    # targets and send the connection to the internal address:
+    # scheme: http
+    # proxy_url: http://moodle-internal:80
