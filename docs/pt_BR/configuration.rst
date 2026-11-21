@@ -1,11 +1,41 @@
 Configuração
 ============
 
-As configurações ficarão em *Administração do site > Plugins > Ferramentas de administração > tool_prometheus*.
+As configurações ficam em *Administração do site > Plugins > Ferramentas de administração > Prometheus exporter*.
 
-Configurações previstas
+Token
+-----
+
+O Prometheus envia o token no header ``Authorization: Bearer <token>``. Use um valor aleatório longo (por exemplo ``openssl rand -hex 32``). O token nunca é aceito na query string, que acaba nos logs de acesso.
+
+* Sem token configurado o endpoint responde ``503`` (não configurado).
+* Token ausente ou errado: ``401``.
+
+Para manter o token fora do banco de dados, force-o no ``config.php`` (por exemplo a partir de uma variável de ambiente):
+
+.. code-block:: php
+
+   $CFG->forced_plugin_settings['tool_prometheus']['token'] = getenv('MOODLE_PROMETHEUS_TOKEN');
+
+Endereços IP permitidos
 -----------------------
 
-* Token de acesso ao endpoint de métricas.
-* Endereços IP ou faixas CIDR permitidos.
-* Janelas de tempo para usuários ativos.
+Opcional. Um endereço ou faixa por linha (CIDR, ou endereços parciais como ``10.1.``). Requisições de outros endereços recebem ``403``, mesmo com token válido. Atrás de um proxy reverso, configure o Moodle (``$CFG->reverseproxy`` e ``$CFG->getremoteaddrconf``) para que ele veja o endereço real do cliente.
+
+Janelas de usuários ativos
+--------------------------
+
+Janelas separadas por vírgula, em segundos, do gauge ``moodle_users_active`` (um label ``window`` para cada, no máximo dez). Padrão: ``300,3600,86400``.
+
+Tarefa agendada
+---------------
+
+*Compute moodledata disk usage for the Prometheus exporter* roda a cada hora (minuto 23). Ela só lê o moodledata e grava os tamanhos na configuração do plugin; o endpoint informa o último resultado.
+
+Host usado pelo Prometheus
+--------------------------
+
+O Moodle redireciona requisições cujo host é diferente do ``$CFG->wwwroot``. O Prometheus precisa chegar ao endpoint com o host do ``wwwroot``:
+
+* colete pela URL pública do site; ou
+* colete por um endereço interno usando ``proxy_url`` (o alvo mantém o host do ``wwwroot`` e a conexão vai para o endereço interno), como no exemplo em :doc:`usage`.

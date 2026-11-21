@@ -3,23 +3,24 @@ moodle-tool_prometheus
 
 **OpenMetrics / Prometheus exporter for Moodle.**
 
-Exposes Moodle platform metrics in the OpenMetrics text format, so Prometheus can scrape them and Grafana can chart them.
+Exposes Moodle platform metrics on a token-protected endpoint, so Prometheus can scrape them and Grafana can chart and alert on them.
 
 .. note::
 
-   Under development, targeting the ``v0.1.0 – MVP`` milestone. There is no release yet.
-   Follow the progress in the `issues <https://github.com/moodle-observability/moodle-tool_prometheus/issues>`_.
+   Version 0.1.0 (alpha). Follow the progress in the `issues <https://github.com/moodle-observability/moodle-tool_prometheus/issues>`_.
 
-Planned features
-----------------
+Features
+--------
 
-* ``/metrics`` endpoint protected by a token, with optional IP allow list.
-* Active users and open sessions (gauges).
-* Adhoc task queue size, oldest pending task age and failing tasks.
+* ``/admin/tool/prometheus/metrics.php`` endpoint, authenticated by a bearer token, with an optional IP allow list. It answers in OpenMetrics or in the Prometheus text format (content negotiation).
+* Active users per time window, registered users and open sessions (database, Redis or memcached session handlers).
+* Adhoc task queue: queued, due, running and failing tasks and the age of the oldest one; failing scheduled tasks; last cron start.
 * Quiz attempts in progress.
-* MUC cache hit ratio per store.
-* moodledata disk usage, computed by a scheduled task (never during a scrape).
-* Sample Grafana dashboard and Prometheus ``scrape_config``.
+* Readiness of each cache (MUC) store instance.
+* moodledata disk usage per top level folder, computed by a scheduled task (never during a scrape).
+* Duration and success of each collector: a failing collector never breaks the scrape.
+* Extension point: other plugins add their own metrics through a hook (:doc:`extending`).
+* Sample Prometheus ``scrape_config``, alert rules and Grafana dashboard.
 
 Requirements
 ------------
@@ -42,3 +43,5 @@ Links
    installation
    configuration
    usage
+   metrics
+   extending

@@ -1,0 +1,59 @@
+# Example alert rules for tool_prometheus.
+groups:
+  - name: moodle
+    rules:
+      - alert: MoodleScrapeDown
+        expr: up{job="moodle"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Prometheus cannot scrape {{ $labels.instance }}"
+
+      - alert: MoodleCronNotRunning
+        expr: time() - moodle_cron_last_start_timestamp_seconds > 900
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Moodle cron has not started for more than 15 minutes"
+
+      - alert: MoodleAdhocQueueStuck
+        expr: moodle_adhoc_task_oldest_age_seconds > 3600
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "The oldest adhoc task has been waiting for more than one hour"
+
+      - alert: MoodleTasksFailing
+        expr: moodle_adhoc_tasks_failing > 0 or moodle_scheduled_tasks_failing > 0
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Moodle tasks are failing"
+
+      - alert: MoodleCacheStoreNotReady
+        expr: moodle_cache_store_ready == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Cache store {{ $labels.store }} is not ready"
+
+      - alert: MoodleCollectorFailing
+        expr: moodle_scrape_collector_success == 0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "tool_prometheus collector {{ $labels.collector }} is failing"
+
+      - alert: MoodleDiskScanStale
+        expr: time() - moodle_moodledata_scan_timestamp_seconds > 3 * 3600
+        for: 10m
+        labels:
+          severity: info
+        annotations:
+          summary: "moodledata disk usage was not computed in the last 3 hours"
