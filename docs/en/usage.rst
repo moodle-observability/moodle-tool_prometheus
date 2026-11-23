@@ -21,6 +21,8 @@ Example ``scrape_config`` (also in ``examples/prometheus.yml`` of the repository
 
 The token file must contain only the token. To scrape an internal address while keeping the host of ``wwwroot``, add ``proxy_url: http://<internal address>:80`` and keep the public host in ``targets``.
 
+To tell sites apart (production, staging, other Moodle sites), add a ``site`` label on the scraping side: see :doc:`site`.
+
 Check the output with ``promtool``:
 
 .. code-block:: bash

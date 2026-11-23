@@ -29,7 +29,7 @@ html_theme_options = {
     "doc_path": "docs/pt_BR/",
     "show_edit_on_github": True,
     "enable_dark_mode": True,
-    "navigation_links": "Início|index, Instalação|installation, Configuração|configuration, Uso|usage, Métricas|metrics, Extensão|extending",
+    "navigation_links": "Início|index, Instalação|installation, Configuração|configuration, Uso|usage, Site|site, Métricas|metrics, Extensão|extending",
 }
 
 html_static_path = []

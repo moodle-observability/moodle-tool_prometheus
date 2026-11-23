@@ -18,6 +18,8 @@ Quick start:
 2. Set a token in *Site administration > Plugins > Admin tools > Prometheus exporter* (or force it in `config.php`).
 3. Scrape `https://<site>/admin/tool/prometheus/metrics.php` with `Authorization: Bearer <token>`.
 
+The exporter adds no `site` label: identify each site on the scraping side (Prometheus or Alloy). The documentation explains why and how.
+
 [`examples/`](examples) has a Prometheus scrape configuration, alert rules and a Grafana dashboard. Other plugins can add
 metrics through the `\tool_prometheus\hook\collect_metrics` hook.
 

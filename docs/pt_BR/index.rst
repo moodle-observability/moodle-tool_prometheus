@@ -43,5 +43,6 @@ Links
    installation
    configuration
    usage
+   site
    metrics
    extending
