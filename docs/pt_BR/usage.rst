@@ -21,6 +21,8 @@ Exemplo de ``scrape_config`` (também em ``examples/prometheus.yml`` do reposit�
 
 O arquivo do token deve conter só o token. Para coletar por um endereço interno mantendo o host do ``wwwroot``, acrescente ``proxy_url: http://<endereço interno>:80`` e mantenha o host público em ``targets``.
 
+Para distinguir sites (produção, homologação, outros Moodle), acrescente um rótulo ``site`` do lado da coleta: veja :doc:`site`.
+
 Confira a saída com o ``promtool``:
 
 .. code-block:: bash
