@@ -1,7 +1,7 @@
 Metrics
 =======
 
-All metrics are gauges. Session counts are cached for one minute; disk usage comes from the hourly scheduled task.
+All metrics are gauges, except ``moodle_folder_downloads_total`` (counter). Session counts are cached for one minute; disk usage comes from the hourly scheduled task.
 
 .. list-table::
    :header-rows: 1
@@ -72,6 +72,9 @@ All metrics are gauges. Session counts are cached for one minute; disk usage com
    * - ``moodle_folders_large_download_enabled``
      - 
      - Folders above the download limit (50 MiB by default) with the "Download folder" button enabled.
+   * - ``moodle_folder_downloads_total``
+     - ``size_band``, ``download_enabled``
+     - Counter of folder downloads (ZIP of every file), by size band and by the state of the button at download time. ``download_enabled="0"``: the ZIP was requested through the URL of a folder whose button is hidden.
    * - ``moodle_folders_scan_timestamp_seconds``
      - 
      - Unix time of the last count of the folders.
@@ -94,4 +97,6 @@ The "Download folder" button makes ``mod/folder/download_folder.php`` build the 
 
 The names and labels are the same as the external ``moodle_ops_exporter``, so that the same dashboards and alerts work with both.
 
-The ZIP is also built when someone opens the download URL directly, even with the button disabled: the core only checks ``mod/folder:view``. Block the URL of large folders in the web server if needed.
+The ZIP is also built when someone opens the download URL directly, even with the button disabled: the core only checks ``mod/folder:view``. ``moodle_folder_downloads_total`` shows it (``download_enabled="0"``); it is counted by an observer of ``\mod_folder\event\all_files_downloaded``, without reading the log. Block the URL of large folders in the web server if needed.
+
+The external ``moodle_ops_exporter`` publishes ``moodle_folder_downloads``, the count in a window read from the log; ``increase(moodle_folder_downloads_total[1h])`` gives the same value for one hour.

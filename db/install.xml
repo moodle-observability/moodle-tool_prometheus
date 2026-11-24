@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="admin/tool/prometheus/db" VERSION="20261124" COMMENT="XMLDB file for Moodle admin/tool/prometheus"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="tool_prometheus_counter" COMMENT="Counters incremented by event observers (kept across cache purges)">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" COMMENT="Metric name"/>
+        <FIELD NAME="labels" TYPE="char" LENGTH="191" NOTNULL="true" SEQUENCE="false" COMMENT="Labels, as sorted JSON"/>
+        <FIELD NAME="value" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="namelabels" UNIQUE="true" FIELDS="name, labels"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

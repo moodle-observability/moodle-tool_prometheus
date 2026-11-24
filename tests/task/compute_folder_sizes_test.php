@@ -30,6 +30,8 @@ use tool_prometheus\local\collectors\folders;
 #[CoversClass(compute_folder_sizes::class)]
 #[CoversClass(bands::class)]
 #[CoversClass(folders::class)]
+#[CoversClass(\tool_prometheus\observer::class)]
+#[CoversClass(\tool_prometheus\local\counter::class)]
 final class compute_folder_sizes_test extends \advanced_testcase {
     /** One MiB. */
     private const MB = 1048576;
@@ -112,7 +114,11 @@ final class compute_folder_sizes_test extends \advanced_testcase {
      */
     public function test_task_and_collector(): void {
         $this->resetAfterTest();
-        $this->assertSame([], (new folders())->collect());
+        // Before the first count, only the downloads counter (every band at zero).
+        $metrics = (new folders())->collect();
+        $this->assertCount(1, $metrics);
+        $this->assertSame('moodle_folder_downloads_total', $metrics[0]->name);
+        $this->assertSame([0], array_values(array_unique(array_column($metrics[0]->get_samples(), 'value'))));
         $this->setAdminUser();
         $course = $this->getDataGenerator()->create_course();
         $this->folder($course, [60 * self::MB], true);
@@ -129,9 +135,46 @@ final class compute_folder_sizes_test extends \advanced_testcase {
         }
         $this->assertSame(1, $values['moodle_folders{"download_enabled":"1","size_band":"50-100MB"}']);
         $this->assertSame(0, $values['moodle_folders{"download_enabled":"0","size_band":"0-25MB"}']);
-        $this->assertCount(8 + 3, $values);
+        $this->assertCount(8 + 8 + 3, $values);
         $this->assertSame(60 * self::MB, $values['moodle_folder_max_bytes[]']);
         $this->assertSame(1, $values['moodle_folders_large_download_enabled[]']);
         $this->assertGreaterThan(0, $values['moodle_folders_scan_timestamp_seconds[]']);
+    }
+
+    /**
+     * Folder downloads are counted by band and by the state of the button at download time.
+     */
+    public function test_downloads(): void {
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        $course = $this->getDataGenerator()->create_course();
+        $hidden = $this->folder($course, [80 * self::MB], false);
+        $small = $this->folder($course, [1 * self::MB], true);
+        $download = function (\stdClass $folder): void {
+            \mod_folder\event\all_files_downloaded::create([
+                'context' => \context_module::instance($folder->cmid),
+                'objectid' => $folder->id,
+            ])->trigger();
+        };
+        $download($hidden);
+        $download($hidden);
+        $download($small);
+
+        $values = [];
+        foreach (\tool_prometheus\local\counter::values('moodle_folder_downloads_total') as [$labels, $value]) {
+            $values[$labels['size_band'] . '/' . $labels['download_enabled']] = $value;
+        }
+        ksort($values);
+        $this->assertSame(['0-25MB/1' => 1, '50-100MB/0' => 2], $values);
+
+        $metric = (new folders())->collect()[0];
+        $this->assertSame('counter', $metric->type);
+        $samples = [];
+        foreach ($metric->get_samples() as $sample) {
+            $samples[$sample['labels']['size_band'] . '/' . $sample['labels']['download_enabled']] = $sample['value'];
+        }
+        $this->assertCount(8, $samples);
+        $this->assertSame(2, $samples['50-100MB/0']);
+        $this->assertSame(0, $samples['>100MB/1']);
     }
 }

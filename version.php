@@ -25,8 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'tool_prometheus';
-$plugin->version = 2026112400;
+$plugin->version = 2026112401;
 $plugin->requires = 2026100500;
 $plugin->supported = [503, 503];
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.2.0';
+$plugin->release = '0.3.0';
