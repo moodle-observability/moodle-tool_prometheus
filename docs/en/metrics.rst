@@ -63,6 +63,18 @@ All metrics are gauges. Session counts are cached for one minute; disk usage com
    * - ``moodle_moodledata_scan_duration_seconds``
      - 
      - Duration of the last disk scan.
+   * - ``moodle_folders``
+     - ``size_band``, ``download_enabled``
+     - Folders (``mod_folder``) by size band, in MiB (``0-25MB``, ``25-50MB``, ``50-100MB``, ``>100MB`` by default), and by the "Download folder" button (``0`` or ``1``).
+   * - ``moodle_folder_max_bytes``
+     - 
+     - Size of the largest folder.
+   * - ``moodle_folders_large_download_enabled``
+     - 
+     - Folders above the download limit (50 MiB by default) with the "Download folder" button enabled.
+   * - ``moodle_folders_scan_timestamp_seconds``
+     - 
+     - Unix time of the last count of the folders.
    * - ``moodle_scrape_collector_success``
      - ``collector``
      - 1 when the collector (or the hook) succeeded.
@@ -74,3 +86,12 @@ Cache hit ratio
 ---------------
 
 Moodle keeps cache hit and miss statistics only inside the current request (``$CFG->perfdebug``), so a hit ratio per store cannot be exported across requests. The exporter reports the readiness of each store instead.
+
+Folders
+-------
+
+The "Download folder" button makes ``mod/folder/download_folder.php`` build the ZIP in PHP: with large folders, it holds a web server process for minutes. The ``compute_folder_sizes`` task counts the folders every hour (one aggregate query on ``files``, never during a scrape). A folder equal to a band limit belongs to that band; the limits are configurable (:doc:`configuration`).
+
+The names and labels are the same as the external ``moodle_ops_exporter``, so that the same dashboards and alerts work with both.
+
+The ZIP is also built when someone opens the download URL directly, even with the button disabled: the core only checks ``mod/folder:view``. Block the URL of large folders in the web server if needed.

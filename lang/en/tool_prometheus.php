@@ -34,8 +34,13 @@ $string['endpoint_desc'] = 'Prometheus scrapes <code>{$a}</code> with the header
 $string['error:forbidden'] = 'Address not allowed.';
 $string['error:notconfigured'] = 'The metrics token is not configured.';
 $string['error:unauthorized'] = 'Missing or invalid token.';
+$string['folderbands'] = 'Folder size bands';
+$string['folderbands_desc'] = 'Comma separated limits, in MiB, of the size bands of the <code>moodle_folders</code> metric. A folder equal to a limit belongs to the band of that limit; with 25,50,100 the bands are 0-25MB, 25-50MB, 50-100MB and >100MB.';
+$string['folderdownloadlimit'] = 'Folder download limit';
+$string['folderdownloadlimit_desc'] = 'Size, in MiB, above which a folder with the "Download folder" button enabled is counted in <code>moodle_folders_large_download_enabled</code>: the ZIP of such a folder is built in PHP and holds a web server process for a long time.';
 $string['pluginname'] = 'Prometheus exporter';
 $string['privacy:metadata'] = 'The Prometheus exporter only exposes aggregated counts; it does not store personal data.';
 $string['task_compute_disk_usage'] = 'Compute moodledata disk usage for the Prometheus exporter';
+$string['task_compute_folder_sizes'] = 'Count the folders by size for the Prometheus exporter';
 $string['token'] = 'Token';
 $string['token_desc'] = 'Secret sent by Prometheus in the <code>Authorization: Bearer</code> header. Use a long random value. It can also be forced in config.php: <code>$CFG->forced_plugin_settings[\'tool_prometheus\'][\'token\'] = getenv(\'MOODLE_PROMETHEUS_TOKEN\');</code>. Without a token the endpoint answers 503.';

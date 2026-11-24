@@ -57,3 +57,13 @@ groups:
           severity: info
         annotations:
           summary: "moodledata disk usage was not computed in the last 3 hours"
+
+      # Folders created or edited come back with the "Download folder" button enabled.
+      - alert: MoodleLargeFolderDownloadEnabled
+        expr: moodle_folders_large_download_enabled > 0
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "{{ $value }} large folders have the \"Download folder\" button enabled"
+          description: "Their ZIP is built in PHP and holds a web server process for minutes. Disable the button."

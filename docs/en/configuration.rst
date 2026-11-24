@@ -39,3 +39,9 @@ Moodle redirects requests whose host differs from ``$CFG->wwwroot``. Prometheus 
 
 * scrape the public URL of the site; or
 * scrape an internal address through ``proxy_url`` (the target keeps the ``wwwroot`` host while the connection goes to the internal address), as in the example in :doc:`usage`.
+
+Folders
+-------
+
+* **Folder size bands** (``folderbands``, default ``25,50,100``): Limits, in MiB, of the size bands of ``moodle_folders``.
+* **Folder download limit** (``folderdownloadlimit``, default ``50``): Size, in MiB, above which a folder with the download button enabled is counted in ``moodle_folders_large_download_enabled``.
