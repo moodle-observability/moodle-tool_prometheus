@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0 - 2026-11-24
+
+- `moodle_folder_downloads_total{size_band, download_enabled}`: counter of folder downloads (ZIP of every file),
+  by size band and by the state of the "Download folder" button, from an observer of
+  `\mod_folder\event\all_files_downloaded` (no log query). `download_enabled="0"` shows ZIPs requested through
+  the URL of folders whose button is hidden.
+- New table `tool_prometheus_counter` for counters kept across cache purges.
+- Example alert `MoodleLargeFolderDownloadedByUrl`.
+
 ## 0.2.0 - 2026-11-24
 
 - Folder metrics (`mod_folder`): `moodle_folders{size_band, download_enabled}`, `moodle_folder_max_bytes`,

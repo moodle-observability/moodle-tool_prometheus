@@ -17,6 +17,7 @@
 namespace tool_prometheus\local\collectors;
 
 use tool_prometheus\local\collector;
+use tool_prometheus\local\counter;
 use tool_prometheus\local\metric;
 
 /**
@@ -36,9 +37,10 @@ final class folders implements collector {
 
     #[\Override]
     public function collect(): array {
+        $metrics = [self::downloads()];
         $data = json_decode((string) get_config('tool_prometheus', 'folders'), true);
         if (!is_array($data) || !isset($data['bands'])) {
-            return [];
+            return $metrics;
         }
         $folders = new metric('moodle_folders', 'Folders (mod_folder) by size band (MiB) and download button.');
         foreach ($data['bands'] as $band => $counts) {
@@ -46,7 +48,7 @@ final class folders implements collector {
                 $folders->set((int) ($counts[$download] ?? 0), ['size_band' => (string) $band, 'download_enabled' => $download]);
             }
         }
-        return [
+        return array_merge($metrics, [
             $folders,
             (new metric('moodle_folder_max_bytes', 'Size of the largest folder, in bytes.'))
                 ->set((int) ($data['max'] ?? 0)),
@@ -56,6 +58,33 @@ final class folders implements collector {
             ))->set((int) ($data['largeenabled'] ?? 0)),
             (new metric('moodle_folders_scan_timestamp_seconds', 'Unix time of the last count of the folders.'))
                 ->set((int) get_config('tool_prometheus', 'folders_time')),
-        ];
+        ]);
+    }
+
+    /**
+     * Folder downloads counted by the observer; every band of the current settings starts at zero.
+     *
+     * @return metric
+     */
+    private static function downloads(): metric {
+        $values = [];
+        foreach (\tool_prometheus\task\compute_folder_sizes::bands()->labels() as $band) {
+            foreach (['0', '1'] as $download) {
+                $values[json_encode(['download_enabled' => $download, 'size_band' => $band])] = 0;
+            }
+        }
+        foreach (counter::values(\tool_prometheus\observer::FOLDER_DOWNLOADS) as [$labels, $value]) {
+            ksort($labels);
+            $values[json_encode($labels)] = $value;
+        }
+        $metric = new metric(
+            \tool_prometheus\observer::FOLDER_DOWNLOADS,
+            'Folder downloads (ZIP of every file) by size band (MiB) and state of the "Download folder" button.',
+            metric::COUNTER
+        );
+        foreach ($values as $labels => $value) {
+            $metric->set($value, json_decode($labels, true));
+        }
+        return $metric;
     }
 }
