@@ -45,6 +45,21 @@ Todas as métricas são gauges, exceto ``moodle_folder_downloads_total`` (counte
    * - ``moodle_adhoc_task_oldest_age_seconds``
      - 
      - Idade da adhoc task mais antiga na fila.
+   * - ``moodle_adhoc_class_runs``
+     - ``classname``
+     - Execuções de adhoc tasks na janela (1 hora por padrão), do log de tarefas; as 10 classes com maior duração somada.
+   * - ``moodle_adhoc_class_failures``
+     - ``classname``
+     - Execuções com falha na janela, mesmas classes.
+   * - ``moodle_adhoc_class_duration_seconds``
+     - ``classname``, ``stat``
+     - Duração total (``sum``) e maior duração (``max``) das execuções na janela, mesmas classes.
+   * - ``moodle_adhoc_class_queued``
+     - ``classname``
+     - Adhoc tasks aguardando agora; as 10 classes com maior fila, o resto em ``other``.
+   * - ``moodle_adhoc_class_oldest_age_seconds``
+     - ``classname``
+     - Idade da adhoc task mais antiga aguardando, mesmas classes.
    * - ``moodle_scheduled_tasks_failing``
      - 
      - Tarefas agendadas habilitadas com fail delay.
@@ -100,3 +115,10 @@ Os nomes e labels são os mesmos do ``moodle_ops_exporter`` (externo), para que 
 O ZIP também é montado quando alguém abre a URL de download diretamente, mesmo com o botão desligado: o core só confere ``mod/folder:view``. O ``moodle_folder_downloads_total`` mostra isso (``download_enabled="0"``); ele é contado por um observer de ``\mod_folder\event\all_files_downloaded``, sem ler o log. Se preciso, bloqueie a URL das pastas grandes no servidor web.
 
 O ``moodle_ops_exporter`` (externo) publica ``moodle_folder_downloads``, a contagem numa janela lida do log; ``increase(moodle_folder_downloads_total[1h])`` dá o mesmo valor para uma hora.
+
+Adhoc tasks por classe
+----------------------
+
+Uma classe pode segurar a fila de adhoc tasks por muito tempo (por exemplo o recálculo de estatísticas de um questionário com milhares de tentativas) sem que os totais mostrem qual. As métricas do log de tarefas leem ``task_log`` (execuções adhoc com ``timestart`` na janela), com os mesmos nomes e seleção do ``moodle_ops_exporter`` (externo); as métricas da fila leem ``task_adhoc`` e só existem aqui. Os nomes de classe não têm a barra inicial, como no log de tarefas. Os valores ficam em cache por um minuto.
+
+O log de tarefas só é gravado quando os logs de tarefas são mantidos (*Administração do site > Servidor > Tarefas > Configuração do log de tarefas*).

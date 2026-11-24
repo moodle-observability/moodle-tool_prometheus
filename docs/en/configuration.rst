@@ -45,3 +45,8 @@ Folders
 
 * **Folder size bands** (``folderbands``, default ``25,50,100``): Limits, in MiB, of the size bands of ``moodle_folders``.
 * **Folder download limit** (``folderdownloadlimit``, default ``50``): Size, in MiB, above which a folder with the download button enabled is counted in ``moodle_folders_large_download_enabled``.
+
+Adhoc tasks
+-----------
+
+* **Adhoc task log window** (``adhocclasswindow``, default ``3600``): seconds of the task log read by the adhoc metrics by class.
