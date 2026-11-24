@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 - 2026-11-24
+
+- Folder metrics (`mod_folder`): `moodle_folders{size_band, download_enabled}`, `moodle_folder_max_bytes`,
+  `moodle_folders_large_download_enabled` and `moodle_folders_scan_timestamp_seconds`, computed hourly by the new
+  `compute_folder_sizes` task. Band limits and the download limit are settings. Names and labels are the same as
+  moodle_ops_exporter.
+- Example alert `MoodleLargeFolderDownloadEnabled`.
+
 ## 0.1.0 - 2026-11-21
 
 First release (alpha).

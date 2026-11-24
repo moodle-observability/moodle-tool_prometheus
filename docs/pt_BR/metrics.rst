@@ -63,6 +63,18 @@ Todas as métricas são gauges. As contagens de sessões ficam em cache por um m
    * - ``moodle_moodledata_scan_duration_seconds``
      - 
      - Duração da última varredura.
+   * - ``moodle_folders``
+     - ``size_band``, ``download_enabled``
+     - Pastas (``mod_folder``) por faixa de tamanho, em MiB (``0-25MB``, ``25-50MB``, ``50-100MB``, ``>100MB`` por padrão), e pelo botão "Baixar pasta" (``0`` ou ``1``).
+   * - ``moodle_folder_max_bytes``
+     - 
+     - Tamanho da maior pasta.
+   * - ``moodle_folders_large_download_enabled``
+     - 
+     - Pastas acima do limite de download (50 MiB por padrão) com o botão "Baixar pasta" ligado.
+   * - ``moodle_folders_scan_timestamp_seconds``
+     - 
+     - Horário Unix da última contagem das pastas.
    * - ``moodle_scrape_collector_success``
      - ``collector``
      - 1 quando o coletor (ou o hook) teve sucesso.
@@ -74,3 +86,12 @@ Taxa de acerto do cache
 -----------------------
 
 O Moodle guarda estatísticas de acerto e falha do cache só dentro da requisição atual (``$CFG->perfdebug``), então não é possível exportar uma taxa de acerto por store entre requisições. O exportador informa a prontidão de cada store.
+
+Pastas
+------
+
+O botão "Baixar pasta" faz o ``mod/folder/download_folder.php`` montar o ZIP em PHP: com pastas grandes, ele prende um processo do servidor web por minutos. A tarefa ``compute_folder_sizes`` conta as pastas a cada hora (uma consulta agregada em ``files``, nunca durante o scrape). Uma pasta igual ao limite de uma faixa fica nessa faixa; os limites são configuráveis (:doc:`configuration`).
+
+Os nomes e labels são os mesmos do ``moodle_ops_exporter`` (externo), para que os mesmos painéis e alertas sirvam aos dois.
+
+O ZIP também é montado quando alguém abre a URL de download diretamente, mesmo com o botão desligado: o core só confere ``mod/folder:view``. Se preciso, bloqueie a URL das pastas grandes no servidor web.

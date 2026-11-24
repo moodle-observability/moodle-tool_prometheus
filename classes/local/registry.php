@@ -52,6 +52,7 @@ final class registry {
             new collectors\quiz(),
             new collectors\cache(),
             new collectors\disk(),
+            new collectors\folders(),
         ];
     }
 

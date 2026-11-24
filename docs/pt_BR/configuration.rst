@@ -39,3 +39,9 @@ O Moodle redireciona requisições cujo host é diferente do ``$CFG->wwwroot``. 
 
 * colete pela URL pública do site; ou
 * colete por um endereço interno usando ``proxy_url`` (o alvo mantém o host do ``wwwroot`` e a conexão vai para o endereço interno), como no exemplo em :doc:`usage`.
+
+Pastas
+------
+
+* **Faixas de tamanho das pastas** (``folderbands``, padrão ``25,50,100``): Limites, em MiB, das faixas de ``moodle_folders``.
+* **Limite de download das pastas** (``folderdownloadlimit``, padrão ``50``): Tamanho, em MiB, acima do qual uma pasta com o botão de download ligado entra em ``moodle_folders_large_download_enabled``.

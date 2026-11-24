@@ -54,5 +54,19 @@ if ($hassiteconfig) {
             '300,3600,86400',
             PARAM_SEQUENCE
         ));
+        $settings->add(new admin_setting_configtext(
+            'tool_prometheus/folderbands',
+            get_string('folderbands', 'tool_prometheus'),
+            get_string('folderbands_desc', 'tool_prometheus'),
+            '25,50,100',
+            PARAM_SEQUENCE
+        ));
+        $settings->add(new admin_setting_configtext(
+            'tool_prometheus/folderdownloadlimit',
+            get_string('folderdownloadlimit', 'tool_prometheus'),
+            get_string('folderdownloadlimit_desc', 'tool_prometheus'),
+            '50',
+            PARAM_INT
+        ));
     }
 }
