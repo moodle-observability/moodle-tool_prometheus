@@ -26,6 +26,8 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['activewindows'] = 'Active user windows';
 $string['activewindows_desc'] = 'Comma separated time windows, in seconds, for the <code>moodle_users_active</code> gauge (one label per window). Example: 300,3600,86400.';
+$string['adhocclasswindow'] = 'Adhoc task log window';
+$string['adhocclasswindow_desc'] = 'Seconds of the task log read by <code>moodle_adhoc_class_runs</code>, <code>moodle_adhoc_class_failures</code> and <code>moodle_adhoc_class_duration_seconds</code> (the 10 classes with the longest total duration).';
 $string['allowedips'] = 'Allowed IP addresses';
 $string['allowedips_desc'] = 'Optional. Only these addresses or ranges (one per line, CIDR or partial addresses) may read the metrics. Empty: any address with a valid token.';
 $string['cachedef_metrics'] = 'Values of expensive metrics, kept for one minute';

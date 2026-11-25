@@ -55,6 +55,13 @@ if ($hassiteconfig) {
             PARAM_SEQUENCE
         ));
         $settings->add(new admin_setting_configtext(
+            'tool_prometheus/adhocclasswindow',
+            get_string('adhocclasswindow', 'tool_prometheus'),
+            get_string('adhocclasswindow_desc', 'tool_prometheus'),
+            '3600',
+            PARAM_INT
+        ));
+        $settings->add(new admin_setting_configtext(
             'tool_prometheus/folderbands',
             get_string('folderbands', 'tool_prometheus'),
             get_string('folderbands_desc', 'tool_prometheus'),

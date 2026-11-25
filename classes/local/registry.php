@@ -53,6 +53,7 @@ final class registry {
             new collectors\cache(),
             new collectors\disk(),
             new collectors\folders(),
+            new collectors\adhoc_classes(),
         ];
     }
 

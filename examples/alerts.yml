@@ -59,6 +59,23 @@ groups:
           summary: "moodledata disk usage was not computed in the last 3 hours"
 
       # Folders created or edited come back with the "Download folder" button enabled.
+      # One adhoc task class keeps failing (moodle_ops_exporter exposes the same metric).
+      - alert: MoodleAdhocClassFailing
+        expr: moodle_adhoc_class_failures > 5
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Adhoc task {{ $labels.classname }} failed {{ $value }} times in the last hour"
+
+      # One adhoc task class takes most of the cron time.
+      - alert: MoodleAdhocClassSlow
+        expr: moodle_adhoc_class_duration_seconds{stat="max"} > 900
+        labels:
+          severity: info
+        annotations:
+          summary: "A run of {{ $labels.classname }} took {{ $value | humanizeDuration }}"
+
       - alert: MoodleLargeFolderDownloadEnabled
         expr: moodle_folders_large_download_enabled > 0
         for: 1h

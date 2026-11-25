@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 - 2026-11-24
+
+- Adhoc tasks by class: `moodle_adhoc_class_runs`, `moodle_adhoc_class_failures` and
+  `moodle_adhoc_class_duration_seconds{stat="sum"|"max"}` from the task log (window configurable, 1 hour by default,
+  top 10 classes by total duration, same as moodle_ops_exporter), and `moodle_adhoc_class_queued` and
+  `moodle_adhoc_class_oldest_age_seconds` from the queue (top 10, rest in `other`). Kept for one minute.
+- Example alerts `MoodleAdhocClassFailing` and `MoodleAdhocClassSlow`.
+
 ## 0.3.0 - 2026-11-24
 
 - `moodle_folder_downloads_total{size_band, download_enabled}`: counter of folder downloads (ZIP of every file),

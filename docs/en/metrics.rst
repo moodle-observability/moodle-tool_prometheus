@@ -45,6 +45,21 @@ All metrics are gauges, except ``moodle_folder_downloads_total`` (counter). Sess
    * - ``moodle_adhoc_task_oldest_age_seconds``
      - 
      - Age of the oldest waiting adhoc task.
+   * - ``moodle_adhoc_class_runs``
+     - ``classname``
+     - Adhoc task runs in the window (1 hour by default), from the task log; the 10 classes with the longest total duration.
+   * - ``moodle_adhoc_class_failures``
+     - ``classname``
+     - Failed adhoc task runs in the window, same classes.
+   * - ``moodle_adhoc_class_duration_seconds``
+     - ``classname``, ``stat``
+     - Total (``sum``) and longest (``max``) duration of the runs in the window, same classes.
+   * - ``moodle_adhoc_class_queued``
+     - ``classname``
+     - Adhoc tasks waiting to run now; the 10 classes with the longest queue, the rest in ``other``.
+   * - ``moodle_adhoc_class_oldest_age_seconds``
+     - ``classname``
+     - Age of the oldest adhoc task waiting to run, same classes.
    * - ``moodle_scheduled_tasks_failing``
      - 
      - Enabled scheduled tasks with a fail delay.
@@ -100,3 +115,10 @@ The names and labels are the same as the external ``moodle_ops_exporter``, so th
 The ZIP is also built when someone opens the download URL directly, even with the button disabled: the core only checks ``mod/folder:view``. ``moodle_folder_downloads_total`` shows it (``download_enabled="0"``); it is counted by an observer of ``\mod_folder\event\all_files_downloaded``, without reading the log. Block the URL of large folders in the web server if needed.
 
 The external ``moodle_ops_exporter`` publishes ``moodle_folder_downloads``, the count in a window read from the log; ``increase(moodle_folder_downloads_total[1h])`` gives the same value for one hour.
+
+Adhoc tasks by class
+--------------------
+
+One class can hold the adhoc queue for a long time (for example the recalculation of quiz statistics in a quiz with thousands of attempts) without the totals showing which one. The task log metrics read ``task_log`` (adhoc runs, ``timestart`` in the window), with the same names and selection as the external ``moodle_ops_exporter``; the queue metrics read ``task_adhoc`` and exist only here. Class names have no leading backslash, as in the task log. The values are kept for one minute.
+
+The task log is written only when the task logs are kept (*Site administration > Server > Tasks > Task log configuration*).

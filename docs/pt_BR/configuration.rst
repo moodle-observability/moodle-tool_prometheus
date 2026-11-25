@@ -45,3 +45,8 @@ Pastas
 
 * **Faixas de tamanho das pastas** (``folderbands``, padrão ``25,50,100``): Limites, em MiB, das faixas de ``moodle_folders``.
 * **Limite de download das pastas** (``folderdownloadlimit``, padrão ``50``): Tamanho, em MiB, acima do qual uma pasta com o botão de download ligado entra em ``moodle_folders_large_download_enabled``.
+
+Adhoc tasks
+-----------
+
+* **Janela do log de adhoc tasks** (``adhocclasswindow``, padrão ``3600``): segundos do log de tarefas lidos pelas métricas de adhoc tasks por classe.
