@@ -62,6 +62,20 @@ if ($hassiteconfig) {
             PARAM_INT
         ));
         $settings->add(new admin_setting_configtext(
+            'tool_prometheus/forumbands',
+            get_string('forumbands', 'tool_prometheus'),
+            get_string('forumbands_desc', 'tool_prometheus'),
+            '1000,5000,10000',
+            PARAM_SEQUENCE
+        ));
+        $settings->add(new admin_setting_configtext(
+            'tool_prometheus/forumlargelimit',
+            get_string('forumlargelimit', 'tool_prometheus'),
+            get_string('forumlargelimit_desc', 'tool_prometheus'),
+            '10000',
+            PARAM_INT
+        ));
+        $settings->add(new admin_setting_configtext(
             'tool_prometheus/folderbands',
             get_string('folderbands', 'tool_prometheus'),
             get_string('folderbands_desc', 'tool_prometheus'),

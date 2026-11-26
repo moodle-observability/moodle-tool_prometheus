@@ -43,4 +43,13 @@ $tasks = [
         'month' => '*',
         'dayofweek' => '*',
     ],
+    [
+        'classname' => \tool_prometheus\task\compute_forum_sizes::class,
+        'blocking' => 0,
+        'minute' => '47',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+    ],
 ];

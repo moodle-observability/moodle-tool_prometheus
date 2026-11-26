@@ -93,6 +93,18 @@ Todas as métricas são gauges, exceto ``moodle_folder_downloads_total`` (counte
    * - ``moodle_folders_scan_timestamp_seconds``
      - 
      - Horário Unix da última contagem das pastas.
+   * - ``moodle_forum_discussions``
+     - ``posts_band``
+     - Discussões de fórum por faixa de número de posts (``0-1000``, ``1000-5000``, ``5000-10000``, ``>10000`` por padrão).
+   * - ``moodle_forum_discussion_max_posts``
+     - 
+     - Posts da maior discussão.
+   * - ``moodle_forum_discussions_large``
+     - 
+     - Discussões acima do limite de discussão grande (10000 posts por padrão).
+   * - ``moodle_forum_discussions_scan_timestamp_seconds``
+     - 
+     - Horário Unix da última contagem das discussões.
    * - ``moodle_scrape_collector_success``
      - ``collector``
      - 1 quando o coletor (ou o hook) teve sucesso.
@@ -122,3 +134,8 @@ Adhoc tasks por classe
 Uma classe pode segurar a fila de adhoc tasks por muito tempo (por exemplo o recálculo de estatísticas de um questionário com milhares de tentativas) sem que os totais mostrem qual. As métricas do log de tarefas leem ``task_log`` (execuções adhoc com ``timestart`` na janela), com os mesmos nomes e seleção do ``moodle_ops_exporter`` (externo); as métricas da fila leem ``task_adhoc`` e só existem aqui. Os nomes de classe não têm a barra inicial, como no log de tarefas. Os valores ficam em cache por um minuto.
 
 O log de tarefas só é gravado quando os logs de tarefas são mantidos (*Administração do site > Servidor > Tarefas > Configuração do log de tarefas*).
+
+Fóruns
+------
+
+Discussões com dezenas de milhares de posts demoram demais para abrir e nada mais as mostra. A tarefa ``compute_forum_sizes`` conta os posts de cada discussão a cada hora (posts apagados excluídos; uma consulta agregada em ``forum_posts``, nunca durante o scrape). Uma discussão igual ao limite de uma faixa fica nessa faixa; os limites são configuráveis. Os nomes e labels são os mesmos do ``moodle_ops_exporter`` (externo).
