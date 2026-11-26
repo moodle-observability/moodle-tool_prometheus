@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 - 2026-11-26
+
+- Forum discussions by number of posts: `moodle_forum_discussions{posts_band}`, `moodle_forum_discussion_max_posts`,
+  `moodle_forum_discussions_large` and `moodle_forum_discussions_scan_timestamp_seconds`, computed hourly by the new
+  `compute_forum_sizes` task. Band limits and the large discussion limit are settings. Names and labels are the
+  same as moodle_ops_exporter.
+- Example alert `MoodleForumDiscussionTooLarge`.
+
 ## 0.4.0 - 2026-11-24
 
 - Adhoc tasks by class: `moodle_adhoc_class_runs`, `moodle_adhoc_class_failures` and

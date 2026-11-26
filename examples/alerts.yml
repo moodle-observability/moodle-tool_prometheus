@@ -76,6 +76,15 @@ groups:
         annotations:
           summary: "A run of {{ $labels.classname }} took {{ $value | humanizeDuration }}"
 
+      # Discussions this large take too long to open (moodle_ops_exporter exposes the same metric).
+      - alert: MoodleForumDiscussionTooLarge
+        expr: moodle_forum_discussions_large > 0
+        for: 1h
+        labels:
+          severity: info
+        annotations:
+          summary: "{{ $value }} forum discussions have more posts than the large discussion limit"
+
       - alert: MoodleLargeFolderDownloadEnabled
         expr: moodle_folders_large_download_enabled > 0
         for: 1h

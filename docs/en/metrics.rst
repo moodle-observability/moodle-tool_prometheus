@@ -93,6 +93,18 @@ All metrics are gauges, except ``moodle_folder_downloads_total`` (counter). Sess
    * - ``moodle_folders_scan_timestamp_seconds``
      - 
      - Unix time of the last count of the folders.
+   * - ``moodle_forum_discussions``
+     - ``posts_band``
+     - Forum discussions by band of number of posts (``0-1000``, ``1000-5000``, ``5000-10000``, ``>10000`` by default).
+   * - ``moodle_forum_discussion_max_posts``
+     - 
+     - Posts of the largest discussion.
+   * - ``moodle_forum_discussions_large``
+     - 
+     - Discussions above the large discussion limit (10000 posts by default).
+   * - ``moodle_forum_discussions_scan_timestamp_seconds``
+     - 
+     - Unix time of the last count of the discussions.
    * - ``moodle_scrape_collector_success``
      - ``collector``
      - 1 when the collector (or the hook) succeeded.
@@ -122,3 +134,8 @@ Adhoc tasks by class
 One class can hold the adhoc queue for a long time (for example the recalculation of quiz statistics in a quiz with thousands of attempts) without the totals showing which one. The task log metrics read ``task_log`` (adhoc runs, ``timestart`` in the window), with the same names and selection as the external ``moodle_ops_exporter``; the queue metrics read ``task_adhoc`` and exist only here. Class names have no leading backslash, as in the task log. The values are kept for one minute.
 
 The task log is written only when the task logs are kept (*Site administration > Server > Tasks > Task log configuration*).
+
+Forums
+------
+
+Discussions with tens of thousands of posts take too long to open and nothing else shows them. The ``compute_forum_sizes`` task counts the posts of each discussion every hour (deleted posts excluded; one aggregate query on ``forum_posts``, never during a scrape). A discussion equal to a band limit belongs to that band; the limits are configurable. The names and labels are the same as the external ``moodle_ops_exporter``.

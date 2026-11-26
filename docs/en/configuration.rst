@@ -50,3 +50,9 @@ Adhoc tasks
 -----------
 
 * **Adhoc task log window** (``adhocclasswindow``, default ``3600``): seconds of the task log read by the adhoc metrics by class.
+
+Forums
+------
+
+* **Forum discussion bands** (``forumbands``, default ``1000,5000,10000``): limits, in posts, of the bands of ``moodle_forum_discussions``.
+* **Large discussion limit** (``forumlargelimit``, default ``10000``): posts above which a discussion is counted in ``moodle_forum_discussions_large``.

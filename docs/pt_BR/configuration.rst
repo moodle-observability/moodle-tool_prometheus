@@ -50,3 +50,9 @@ Adhoc tasks
 -----------
 
 * **Janela do log de adhoc tasks** (``adhocclasswindow``, padrão ``3600``): segundos do log de tarefas lidos pelas métricas de adhoc tasks por classe.
+
+Fóruns
+------
+
+* **Faixas das discussões** (``forumbands``, padrão ``1000,5000,10000``): limites, em posts, das faixas de ``moodle_forum_discussions``.
+* **Limite de discussão grande** (``forumlargelimit``, padrão ``10000``): posts acima dos quais uma discussão entra em ``moodle_forum_discussions_large``.
