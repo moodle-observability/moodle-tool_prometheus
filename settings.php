@@ -76,6 +76,20 @@ if ($hassiteconfig) {
             PARAM_INT
         ));
         $settings->add(new admin_setting_configtext(
+            'tool_prometheus/largefilebands',
+            get_string('largefilebands', 'tool_prometheus'),
+            get_string('largefilebands_desc', 'tool_prometheus'),
+            '50,100',
+            PARAM_SEQUENCE
+        ));
+        $settings->add(new admin_setting_configtext(
+            'tool_prometheus/largefilecomponents',
+            get_string('largefilecomponents', 'tool_prometheus'),
+            get_string('largefilecomponents_desc', 'tool_prometheus'),
+            'mod_page,mod_resource,mod_folder',
+            PARAM_TEXT
+        ));
+        $settings->add(new admin_setting_configtext(
             'tool_prometheus/folderbands',
             get_string('folderbands', 'tool_prometheus'),
             get_string('folderbands_desc', 'tool_prometheus'),

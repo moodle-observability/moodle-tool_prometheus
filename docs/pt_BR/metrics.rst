@@ -105,6 +105,12 @@ Todas as métricas são gauges, exceto ``moodle_folder_downloads_total`` (counte
    * - ``moodle_forum_discussions_scan_timestamp_seconds``
      - 
      - Horário Unix da última contagem das discussões.
+   * - ``moodle_files_large``
+     - ``component``, ``size_band``
+     - Arquivos grandes por componente (``mod_page``, ``mod_resource``, ``mod_folder`` por padrão) e faixa de tamanho em MiB (``50-100MB``, ``>100MB`` por padrão). Cada conteúdo (``contenthash``) conta uma vez por componente.
+   * - ``moodle_files_large_scan_timestamp_seconds``
+     - 
+     - Horário Unix da última contagem dos arquivos grandes.
    * - ``moodle_scrape_collector_success``
      - ``collector``
      - 1 quando o coletor (ou o hook) teve sucesso.
@@ -139,3 +145,8 @@ Fóruns
 ------
 
 Discussões com dezenas de milhares de posts demoram demais para abrir e nada mais as mostra. A tarefa ``compute_forum_sizes`` conta os posts de cada discussão a cada hora (posts apagados excluídos; uma consulta agregada em ``forum_posts``, nunca durante o scrape). Uma discussão igual ao limite de uma faixa fica nessa faixa; os limites são configuráveis. Os nomes e labels são os mesmos do ``moodle_ops_exporter`` (externo).
+
+Arquivos grandes
+----------------
+
+Arquivos muito grandes (PDFs de centenas de MB em páginas e recursos) prejudicam downloads e backups. A tarefa ``compute_large_files`` os conta a cada hora, lendo só arquivos acima do primeiro limite (``filesize`` não tem índice: em sites muito grandes, rode a tarefa com menos frequência em *Tarefas agendadas*). Esta métrica só existe no tool_prometheus.

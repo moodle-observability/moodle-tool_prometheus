@@ -56,3 +56,9 @@ Forums
 
 * **Forum discussion bands** (``forumbands``, default ``1000,5000,10000``): limits, in posts, of the bands of ``moodle_forum_discussions``.
 * **Large discussion limit** (``forumlargelimit``, default ``10000``): posts above which a discussion is counted in ``moodle_forum_discussions_large``.
+
+Large files
+-----------
+
+* **Large file bands** (``largefilebands``, default ``50,100``): limits, in MiB, of the bands of ``moodle_files_large``; the first one is the floor.
+* **Large file components** (``largefilecomponents``, default ``mod_page,mod_resource,mod_folder``): components whose files are counted.

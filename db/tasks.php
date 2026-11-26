@@ -52,4 +52,13 @@ $tasks = [
         'month' => '*',
         'dayofweek' => '*',
     ],
+    [
+        'classname' => \tool_prometheus\task\compute_large_files::class,
+        'blocking' => 0,
+        'minute' => '53',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+    ],
 ];

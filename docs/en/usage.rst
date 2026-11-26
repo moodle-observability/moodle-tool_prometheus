@@ -39,4 +39,32 @@ Alerts
 
 ``examples/alerts.yml`` has alert rules for a cron that stopped, a stuck adhoc queue, failing tasks, cache stores that are not ready and failing collectors. Load it in ``rule_files`` of Prometheus.
 
+Shared with moodle_ops_exporter
+-------------------------------
+
+The external ``moodle_ops_exporter`` (an alternative that only reads the database) uses the same names for these alerts, so that one Prometheus setup works with either. Their contract is kept equal in both projects and checked by the exporter CI against a tag of this file: name, ``expr``, ``for`` and ``severity``. The summaries stay in the language of each project. ``MoodleLargeFolderDirectDownload`` differs in the expression by design (a counter here, a count in a window there), so only its name, ``for`` and ``severity`` are compared. Change these alerts in both projects at once.
+
+.. list-table::
+   :header-rows: 1
+
+   * - Alert
+     - for
+     - severity
+   * - ``MoodleAdhocClassFailing``
+     - 15m
+     - warning
+   * - ``MoodleAdhocClassSlow``
+     - 15m
+     - info
+   * - ``MoodleLargeFolderDownloadEnabled``
+     - 1h
+     - warning
+   * - ``MoodleLargeFolderDirectDownload``
+     - 15m
+     - warning
+   * - ``MoodleForumDiscussionTooLarge``
+     - 1h
+     - info
+
+
 All metrics are described in :doc:`metrics`.

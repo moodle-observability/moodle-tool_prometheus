@@ -56,3 +56,9 @@ Fóruns
 
 * **Faixas das discussões** (``forumbands``, padrão ``1000,5000,10000``): limites, em posts, das faixas de ``moodle_forum_discussions``.
 * **Limite de discussão grande** (``forumlargelimit``, padrão ``10000``): posts acima dos quais uma discussão entra em ``moodle_forum_discussions_large``.
+
+Arquivos grandes
+----------------
+
+* **Faixas de arquivos grandes** (``largefilebands``, padrão ``50,100``): limites, em MiB, das faixas de ``moodle_files_large``; o primeiro é o piso.
+* **Componentes de arquivos grandes** (``largefilecomponents``, padrão ``mod_page,mod_resource,mod_folder``): componentes cujos arquivos são contados.

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0 - 2026-11-26
+
+- Large files: `moodle_files_large{component, size_band}` (distinct contents, `mod_page`, `mod_resource` and
+  `mod_folder` by default, bands 50-100MB and >100MB) and `moodle_files_large_scan_timestamp_seconds`, computed
+  hourly by the new `compute_large_files` task.
+- Example alerts aligned with moodle_ops_exporter (shared contract, documented in Usage):
+  `MoodleLargeFolderDownloadedByUrl` renamed to `MoodleLargeFolderDirectDownload` (summed by `site`, `for: 15m`);
+  `MoodleAdhocClassSlow` gets `for: 15m`.
+
 ## 0.5.0 - 2026-11-26
 
 - Forum discussions by number of posts: `moodle_forum_discussions{posts_band}`, `moodle_forum_discussion_max_posts`,
