@@ -55,6 +55,7 @@ final class registry {
             new collectors\folders(),
             new collectors\adhoc_classes(),
             new collectors\forums(),
+            new collectors\large_files(),
         ];
     }
 

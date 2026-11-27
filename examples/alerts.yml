@@ -71,6 +71,7 @@ groups:
       # One adhoc task class takes most of the cron time.
       - alert: MoodleAdhocClassSlow
         expr: moodle_adhoc_class_duration_seconds{stat="max"} > 900
+        for: 15m
         labels:
           severity: info
         annotations:
@@ -95,10 +96,11 @@ groups:
           description: "Their ZIP is built in PHP and holds a web server process for minutes. Disable the button."
 
       # The ZIP of a large folder was requested through its URL although the button is hidden.
-      - alert: MoodleLargeFolderDownloadedByUrl
-        expr: sum(increase(moodle_folder_downloads_total{download_enabled="0",size_band=~"50-100MB|>100MB"}[1h])) > 5
+      - alert: MoodleLargeFolderDirectDownload
+        expr: sum by (site) (increase(moodle_folder_downloads_total{download_enabled="0", size_band=~"50-100MB|>100MB"}[1h])) > 5
+        for: 15m
         labels:
           severity: warning
         annotations:
-          summary: "{{ $value }} downloads of large folders through the URL in the last hour"
+          summary: "{{ $value }} downloads of large folders through the URL in the last hour on {{ $labels.site }}"
           description: "The button is hidden but the core still builds the ZIP. Block mod/folder/download_folder.php for these folders in the web server."

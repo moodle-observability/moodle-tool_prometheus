@@ -105,6 +105,12 @@ All metrics are gauges, except ``moodle_folder_downloads_total`` (counter). Sess
    * - ``moodle_forum_discussions_scan_timestamp_seconds``
      - 
      - Unix time of the last count of the discussions.
+   * - ``moodle_files_large``
+     - ``component``, ``size_band``
+     - Large files by component (``mod_page``, ``mod_resource``, ``mod_folder`` by default) and size band in MiB (``50-100MB``, ``>100MB`` by default). Each content (``contenthash``) is counted once per component.
+   * - ``moodle_files_large_scan_timestamp_seconds``
+     - 
+     - Unix time of the last count of the large files.
    * - ``moodle_scrape_collector_success``
      - ``collector``
      - 1 when the collector (or the hook) succeeded.
@@ -139,3 +145,8 @@ Forums
 ------
 
 Discussions with tens of thousands of posts take too long to open and nothing else shows them. The ``compute_forum_sizes`` task counts the posts of each discussion every hour (deleted posts excluded; one aggregate query on ``forum_posts``, never during a scrape). A discussion equal to a band limit belongs to that band; the limits are configurable. The names and labels are the same as the external ``moodle_ops_exporter``.
+
+Large files
+-----------
+
+Very large files (PDFs of hundreds of MB in pages and resources) hurt downloads and backups. The ``compute_large_files`` task counts them every hour, reading only files above the first band limit (``filesize`` has no index: on very large sites, run the task less often in *Scheduled tasks*). This metric exists only in tool_prometheus.
